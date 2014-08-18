@@ -110,6 +110,7 @@ class ExpectationHandler(object):
     def __init__(self, initialGroup):
         self.__currentGroup = initialGroup
         self.__recordedCalls = []
+        self.__objects = {}
 
     # expect
     def expect(self, mockName):
@@ -141,13 +142,21 @@ class ExpectationHandler(object):
 
     # call
     def object(self, mockName):
-        return AnyAttribute(lambda attrName: self.checkExpectation(mockName + "." + attrName))
+        # @todo Test this objects cache. It's important because it gives the same *identity* to all calls to mock.object
+        # @todo Detect if client tries to create several mocks with same name
+        o = self.__objects.get(mockName)
+        if o is None:
+            o = AnyAttribute(lambda attrName: self.checkExpectation(mockName + "." + attrName))
+            self.__objects[mockName] = o
+        return o
 
     def checkExpectation(self, calledName):
         possibleExpectations = self.__currentGroup.getCurrentPossibleExpectations()
         goodNamedExpectations = [expectation for expectation in possibleExpectations if expectation.checkName(calledName)]
 
         if len(goodNamedExpectations) == 0:
+            # @todo if possibleExpectations is empty, adapt message
+            # @todo display arguments
             raise MockException(calledName + " called instead of " + " or ".join(e.name for e in possibleExpectations))
 
         allGoodNamedExpectationsExpectNoCall = not any(expectation.expectsCall() for expectation in goodNamedExpectations)

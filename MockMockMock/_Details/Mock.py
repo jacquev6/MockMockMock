@@ -28,4 +28,5 @@ class Mock(object):
         return self.__handler.object(self.__name)
 
     def record(self, realObject):
+        # @todo In record mode, catch exceptions. Funny: there is not always a "return" key in getRecordedCalls
         return self.__handler.record(self.__name, realObject)

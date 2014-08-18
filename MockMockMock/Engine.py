@@ -28,7 +28,7 @@ class Engine:
     def create(self, name):
         return Mock(name, self.__handler)
 
-    def replace(self, name):
+    def replace(self, name):  # @todo Add optional param to pass the mock in (to allow replacing several things by same mock)
         container, attribute = self.__findByName(name)
         self.__replaced.append((container, attribute, getattr(container, attribute)))
         m = self.create(name)

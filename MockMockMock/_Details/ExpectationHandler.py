@@ -23,7 +23,7 @@ class AnyAttribute:
         self.__apply = apply
 
     def __getattr__(self, name):
-        ### @todo Fix this hack
+        # @todo Fix this hack
         # Hack to allow m.expect._call_.withArguments,
         # because m.expect.__call__.withArguments fails,
         # because function doesn't have attribute "withArguments"
@@ -206,7 +206,6 @@ class ExpectationHandler(object):
                 "exception": e,
             })
             raise
-
 
     def addRecordedCall(self, call):
         self.__recordedCalls.append(call)

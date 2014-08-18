@@ -75,7 +75,7 @@ class PublicInterface(unittest.TestCase):
         self.assertFalse(isCallable(self.myMock.expect.foobar.andExecute(lambda: 12)))
 
     def testObject(self):
-        ### @todo Maybe expose expected calls in myMock.object.__dir__
+        # @todo Maybe expose expected calls in myMock.object.__dir__
         self.assertEqual(self.dir(self.myMock.object), [])
 
     def dir(self, o):

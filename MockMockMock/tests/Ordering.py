@@ -36,7 +36,7 @@ class Ordering(unittest.TestCase):
         self.assertEqual(self.myMock.object.foobar(1), 14)
         self.mocks.tearDown()
 
-    ### @todo Allow unordered property and method calls on the same name: difficult
+    # @todo Allow unordered property and method calls on the same name: difficult
     def testUnorderedGroupOfSameMethodAndProperty(self):
         with self.assertRaises(MockMockMock.Exception) as cm:
             with self.mocks.unordered:

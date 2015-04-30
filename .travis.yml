@@ -1,6 +1,21 @@
 language: python
 python:
-  - "2.7"
-  - "3.3"
+- 2.7
+- 3.3
+- 3.4
+install:
+- pip install sphinx coveralls
 script:
-  - python setup.py test
+- coverage run "--include=MockMockMock/*" setup.py test
+- if [ "v$TRAVIS_PYTHON_VERSION" == "v2.7" ]; then python setup.py build_sphinx --builder=doctest; fi
+after_success:
+- coveralls
+deploy:
+  provider: pypi
+  user: jacquev6
+  password:
+    secure: VTTgy7471eOtzqyLV0Q+VpFBhbRpQ7lzfBvqTeBW5HwWvBisz4/gbpqs2SSMZoYVCAvlq7qpTRcyCCUZGojwvmYM+dyiyrNS/hwo0i1eIJDWj1TYmUM/Xdt9qhm6FlfCCWIW3WNmJHrAKFqsXdM3tjNIcBMfzgcgoNpt5tUfZiE=
+  on:
+    tags: true
+    repo: jacquev6/MockMockMock
+    python: 2.7

@@ -1,3 +1,15 @@
+============
+MockMockMock
+============
+
+.. include:: ../README.rst
+
+User guide
+==========
+
 .. automodule:: MockMockMock
-   :members:
-   :inherited-members:
+
+Reference
+=========
+
+@todoc

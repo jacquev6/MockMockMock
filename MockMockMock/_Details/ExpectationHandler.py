@@ -1,17 +1,6 @@
-# -*- coding: utf-8 -*-
+# coding: utf8
 
-# Copyright 2013 Vincent Jacques
-# vincent@vincent-jacques.net
-
-# This file is part of MockMockMock. http://jacquev6.github.com/MockMockMock
-
-# MockMockMock is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
-# as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-# MockMockMock is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
-
-# You should have received a copy of the GNU Lesser General Public License along with MockMockMock.  If not, see <http://www.gnu.org/licenses/>.
+# Copyright 2013-2015 Vincent Jacques <vincent@vincent-jacques.net>
 
 from MockException import MockException
 from Expectation import Expectation
@@ -144,6 +133,7 @@ class ExpectationHandler(object):
     def object(self, mockName):
         # @todo Test this objects cache. It's important because it gives the same *identity* to all calls to mock.object
         # @todo Detect if client tries to create several mocks with same name
+        # @todo Handle use case where mock.expect(another_mock.object) ends up with another_mock being printed as hint of what was not called (currently another_mock.__repr__ called instead of...)
         o = self.__objects.get(mockName)
         if o is None:
             o = AnyAttribute(lambda attrName: self.checkExpectation(mockName + "." + attrName))

@@ -4,12 +4,18 @@ MockMockMock
 
 .. include:: ../README.rst
 
-User guide
-==========
 
-.. automodule:: MockMockMock
+Contents
+========
 
-Reference
-=========
+.. toctree::
 
-@todoc
+    user_guide
+    reference
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

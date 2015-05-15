@@ -3,7 +3,7 @@
 # Copyright 2013-2015 Vincent Jacques <vincent@vincent-jacques.net>
 
 master_doc = "index"
-project = "MockMockMock"
+project = "Mock\nMock\nMock"
 author = '<a href="http://vincent-jacques.net/contact">Vincent Jacques</a>'
 copyright = "2013-2015 {}".format(author)
 extensions = []
@@ -18,7 +18,7 @@ nitpicky = True
 extensions.append("alabaster")
 html_theme = "alabaster"
 html_sidebars = {
-    "**": ["about.html", "searchbox.html"],
+    "**": ["about.html", "navigation.html", "searchbox.html"],
 }
 html_theme_options = {
     "github_user": "jacquev6",
@@ -45,3 +45,11 @@ extensions.append("sphinx.ext.doctest")
 # doctest_global_setup
 # doctest_global_cleanup
 doctest_test_doctest_blocks=True
+
+
+# http://sphinx-doc.org/latest/ext/intersphinx.html
+extensions.append("sphinx.ext.intersphinx")
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/2/", None),
+}
+# intersphinx_cache_limit

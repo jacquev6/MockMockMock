@@ -31,7 +31,7 @@ setuptools.setup(
         "Programming Language :: Python",
         "Topic :: Software Development",
     ],
-    test_suite="MockMockMock.tests.AllTests",
+    test_suite="MockMockMock.tests",
     use_2to3=True,
     command_options={
         "build_sphinx": {

@@ -4,4 +4,4 @@
 /MANIFEST
 /*.egg-info/
 /.coverage
-/doc/build/
+/htmlcov/

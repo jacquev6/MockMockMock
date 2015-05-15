@@ -40,7 +40,7 @@ def testForbidenOrder(forbidenOrder):
     def test(self):
         for argument in forbidenOrder[: -1]:
             self.call(argument)
-        with self.assertRaises(MockMockMock.Exception):
+        with self.assertRaises(MockMockMock.MockException):
             self.call(forbidenOrder[-1])
     return test
 
@@ -49,7 +49,7 @@ def testTearDownError(forbidenOrder):
     def test(self):
         for argument in forbidenOrder:
             self.call(argument)
-        with self.assertRaises(MockMockMock.Exception):
+        with self.assertRaises(MockMockMock.MockException):
             self.mocks.tearDown()
     return test
 

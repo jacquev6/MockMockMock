@@ -24,6 +24,6 @@ class SequenceBetweenSeveralLinkedMocks(unittest.TestCase):
     def testShortInvertedSequence(self):
         self.m1.expect.foobar(42)
         self.m2.expect.foobar(43)
-        with self.assertRaises(MockMockMock.Exception) as cm:
+        with self.assertRaises(MockMockMock.MockException) as cm:
             self.m2.object.foobar(43)
         self.assertEqual(str(cm.exception), "m2.foobar called instead of m1.foobar")

@@ -2,7 +2,7 @@
 
 # Copyright 2013-2015 Vincent Jacques <vincent@vincent-jacques.net>
 
-from MockException import MockException
+import MockMockMock
 from Expectation import Expectation
 import ArgumentChecking
 
@@ -147,7 +147,7 @@ class ExpectationHandler(object):
         if len(goodNamedExpectations) == 0:
             # @todo if possibleExpectations is empty, adapt message
             # @todo display arguments
-            raise MockException(calledName + " called instead of " + " or ".join(e.name for e in possibleExpectations))
+            raise MockMockMock.MockException(calledName + " called instead of " + " or ".join(e.name for e in possibleExpectations))
 
         allGoodNamedExpectationsExpectNoCall = not any(expectation.expectsCall() for expectation in goodNamedExpectations)
         allGoodNamedExpectationsExpectCall = all(expectation.expectsCall() for expectation in goodNamedExpectations)
@@ -157,13 +157,13 @@ class ExpectationHandler(object):
         elif allGoodNamedExpectationsExpectNoCall:
             return self.__callExpectation(goodNamedExpectations[0])
         else:
-            raise MockException(calledName + " is expected as a property and as a method call in an unordered group")
+            raise MockMockMock.MockException(calledName + " is expected as a property and as a method call in an unordered group")
 
     def checkExpectationCall(self, expectations, args, kwds):
         for expectation in expectations:
             if expectation.checkCall(args, kwds):
                 return self.__callExpectation(expectation)
-        raise MockException(expectations[0].name + " called with bad arguments " + str(args) + " " + str(kwds))
+        raise MockMockMock.MockException(expectations[0].name + " called with bad arguments " + str(args) + " " + str(kwds))
 
     def __callExpectation(self, expectation):
         returnValue, self.__currentGroup = expectation.call()
@@ -171,7 +171,7 @@ class ExpectationHandler(object):
 
     def tearDown(self):
         if self.__currentGroup.requiresMoreCalls():
-            raise MockException(" or ".join(self.__currentGroup.getRequiredCallsExamples()) + " not called")
+            raise MockMockMock.MockException(" or ".join(self.__currentGroup.getRequiredCallsExamples()) + " not called")
 
     # record / replay
     def record(self, mockName, realObject):

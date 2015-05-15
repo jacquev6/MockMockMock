@@ -27,7 +27,7 @@ class Ordering(unittest.TestCase):
 
     # @todo Allow unordered property and method calls on the same name: difficult
     def testUnorderedGroupOfSameMethodAndProperty(self):
-        with self.assertRaises(MockMockMock.Exception) as cm:
+        with self.assertRaises(MockMockMock.MockException) as cm:
             with self.mocks.unordered:
                 self.myMock.expect.foobar()
                 self.myMock.expect.foobar
@@ -35,7 +35,7 @@ class Ordering(unittest.TestCase):
         self.assertEqual(str(cm.exception), "myMock.foobar is expected as a property and as a method call in an unordered group")
 
     def testUnorderedGroupOfSamePropertyAndMethod(self):
-        with self.assertRaises(MockMockMock.Exception) as cm:
+        with self.assertRaises(MockMockMock.MockException) as cm:
             with self.mocks.unordered:
                 self.myMock.expect.foobar
                 self.myMock.expect.foobar()

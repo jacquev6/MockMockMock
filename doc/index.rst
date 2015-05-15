@@ -12,10 +12,3 @@ Contents
 
     user_guide
     reference
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

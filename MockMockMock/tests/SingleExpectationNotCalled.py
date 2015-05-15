@@ -15,25 +15,25 @@ class SingleExpectationNotCalled(unittest.TestCase):
 
     def testMethodCallWithBadArgument(self):
         self.myMock.expect.foobar(42)
-        with self.assertRaises(MockMockMock.Exception) as cm:
+        with self.assertRaises(MockMockMock.MockException) as cm:
             self.myMock.object.foobar(43)
         self.assertEqual(str(cm.exception), "myMock.foobar called with bad arguments (43,) {}")
 
     def testMethodCallWithBadName(self):
         self.myMock.expect.foobar()
-        with self.assertRaises(MockMockMock.Exception) as cm:
+        with self.assertRaises(MockMockMock.MockException) as cm:
             self.myMock.object.barbaz()
         self.assertEqual(str(cm.exception), "myMock.barbaz called instead of myMock.foobar")
 
     def testPropertyWithBadName(self):
         self.myMock.expect.foobar.andReturn(42)
-        with self.assertRaises(MockMockMock.Exception) as cm:
+        with self.assertRaises(MockMockMock.MockException) as cm:
             self.myMock.object.barbaz
         self.assertEqual(str(cm.exception), "myMock.barbaz called instead of myMock.foobar")
 
     def testMethodNotCalled(self):
         self.myMock.expect.foobar()
-        with self.assertRaises(MockMockMock.Exception) as cm:
+        with self.assertRaises(MockMockMock.MockException) as cm:
             self.mocks.tearDown()
         self.assertEqual(str(cm.exception), "myMock.foobar not called")
         self.myMock.object.foobar()
@@ -41,7 +41,7 @@ class SingleExpectationNotCalled(unittest.TestCase):
 
     def testPropertyNotCalled(self):
         self.myMock.expect.foobar
-        with self.assertRaises(MockMockMock.Exception) as cm:
+        with self.assertRaises(MockMockMock.MockException) as cm:
             self.mocks.tearDown()
         self.assertEqual(str(cm.exception), "myMock.foobar not called")
         self.myMock.object.foobar
@@ -50,11 +50,11 @@ class SingleExpectationNotCalled(unittest.TestCase):
     # def testPropertyNotCalledInOrderedGroup(self):
     #     self.myMock.expect.foobar
     #     self.myMock.expect.barbaz
-    #     with self.assertRaises(MockMockMock.Exception) as cm:
+    #     with self.assertRaises(MockMockMock.MockException) as cm:
     #         self.mocks.tearDown()
     #     self.assertEqual(str(cm.exception), "myMock.foobar not called")
     #     self.myMock.object.foobar
-    #     with self.assertRaises(MockMockMock.Exception) as cm:
+    #     with self.assertRaises(MockMockMock.MockException) as cm:
     #         self.mocks.tearDown()
     #     self.assertEqual(str(cm.exception), "myMock.barbaz not called")
     #     self.myMock.object.barbaz
@@ -64,11 +64,11 @@ class SingleExpectationNotCalled(unittest.TestCase):
     #     with self.mocks.unordered:
     #         self.myMock.expect.foobar
     #         self.myMock.expect.barbaz
-    #     with self.assertRaises(MockMockMock.Exception) as cm:
+    #     with self.assertRaises(MockMockMock.MockException) as cm:
     #         self.mocks.tearDown()
     #     self.assertEqual(str(cm.exception), "myMock.foobar or myMock.barbaz not called")
     #     self.myMock.object.foobar
-    #     with self.assertRaises(MockMockMock.Exception) as cm:
+    #     with self.assertRaises(MockMockMock.MockException) as cm:
     #         self.mocks.tearDown()
     #     self.assertEqual(str(cm.exception), "myMock.barbaz not called")
     #     self.myMock.object.barbaz

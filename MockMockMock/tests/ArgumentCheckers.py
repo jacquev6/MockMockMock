@@ -20,7 +20,7 @@ class ArgumentCheckers(unittest.TestCase):
         m.expect.foobar.withArguments(checker.object).andReturn(42)
         m.expect.foobar.withArguments(checker.object).andReturn(43)
         self.assertEqual(m.object.foobar(12), 42)
-        with self.assertRaises(MockMockMock.Exception) as cm:
+        with self.assertRaises(MockMockMock.MockException) as cm:
             m.object.foobar(13)
         self.assertEqual(str(cm.exception), "m.foobar called with bad arguments (13,) {}")
 

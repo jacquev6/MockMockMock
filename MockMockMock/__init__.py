@@ -7,7 +7,6 @@ import unittest
 
 from .expectation_grouping import OrderedExpectationGroup, UnorderedExpectationGroup, AtomicExpectationGroup, OptionalExpectationGroup, AlternativeExpectationGroup, RepeatedExpectationGroup
 from .expectation_handling import ExpectationHandler
-from .mock import Mock
 
 # @todo When an arguments validator fails, include description of failure in exception (see PyGithub's replay mode: comparers have to log by themselves to make it practical)
 
@@ -16,14 +15,14 @@ class TestCase(unittest.TestCase):
     """
     TestCase()
 
-    A convenience base class for test cases needing a single mock :class:`.Engine`.
+    A convenience base class for test cases needing a single mock :class:`Engine`.
     It inherits from :class:`unittest.TestCase` and sets-up and tears-down one for you.
     """
 
     @property
     def mocks(self):
         """
-        The mock :class:`.Engine`.
+        The mock :class:`Engine`.
         """
         return self.__mocks
 
@@ -50,7 +49,9 @@ class MockException(Exception):
 
 class Engine:
     """
-    @todoc
+    The main class in MockMockMock.
+    It acts as a factory for :class:`Mock` instances and
+    a link between them (for ordering and verification of expectations).
     """
     def __init__(self):
         self.__handler = ExpectationHandler(OrderedExpectationGroup())
@@ -58,7 +59,10 @@ class Engine:
 
     def create(self, name):
         """
-        @todoc
+        Create a new :class:`Mock`.
+
+        :param str name: The name of the mock to create.
+        :return: :class:`Mock`.
         """
         return Mock(name, self.__handler)
 
@@ -145,3 +149,37 @@ class Engine:
         @todoc with link to user guide (Recording)
         """
         return self.__handler.getRecordedCalls()
+
+
+class Mock(object):
+    """
+    Mock()
+
+    @todoc
+    
+    See :class:`Engine` for creating instances of this class.
+    """
+    def __init__(self, name, handler):
+        self.__name = name
+        self.__handler = handler
+
+    @property
+    def expect(self):
+        """
+        @todoc
+        """
+        return self.__handler.expect(self.__name)
+
+    @property
+    def object(self):
+        """
+        @todoc
+        """
+        return self.__handler.object(self.__name)
+
+    def record(self, realObject):
+        """
+        @todoc
+        """
+        # @todo In record mode, catch exceptions. Funny: there is not always a "return" key in getRecordedCalls
+        return self.__handler.record(self.__name, realObject)

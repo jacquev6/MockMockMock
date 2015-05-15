@@ -3,8 +3,8 @@
 # Copyright 2013-2015 Vincent Jacques <vincent@vincent-jacques.net>
 
 import MockMockMock
-from Expectation import Expectation
-import ArgumentChecking
+from .expectation import Expectation
+import argument_checking
 
 
 class AnyAttribute:
@@ -59,7 +59,7 @@ class CallableExpectationProxy(BasicExpectationProxy):
         self.__expectation = expectation
 
     def __call__(self, *args, **kwds):
-        return self.withArguments(ArgumentChecking.Equality(args, kwds))
+        return self.withArguments(argument_checking.Equality(args, kwds))
 
     def withArguments(self, checker):
         self.__expectation.expectCall(checker)

@@ -2,17 +2,17 @@
 
 # Copyright 2013-2015 Vincent Jacques <vincent@vincent-jacques.net>
 
-import inspect as _inspect
-import unittest as _ut
+import inspect
+import unittest
 
-from ._Details.Mock import Mock
-from ._Details.ExpectationGrouping import OrderedExpectationGroup, UnorderedExpectationGroup, AtomicExpectationGroup, OptionalExpectationGroup, AlternativeExpectationGroup, RepeatedExpectationGroup
-from ._Details.ExpectationHandler import ExpectationHandler
+from .expectation_grouping import OrderedExpectationGroup, UnorderedExpectationGroup, AtomicExpectationGroup, OptionalExpectationGroup, AlternativeExpectationGroup, RepeatedExpectationGroup
+from .expectation_handling import ExpectationHandler
+from .mock import Mock
 
 # @todo When an arguments validator fails, include description of failure in exception (see PyGithub's replay mode: comparers have to log by themselves to make it practical)
 
 
-class TestCase(_ut.TestCase):
+class TestCase(unittest.TestCase):
     """
     TestCase()
 
@@ -77,7 +77,7 @@ class Engine:
     def __findByName(name):
         names = name.split(".")
         attribute = names[-1]
-        current = _inspect.currentframe()
+        current = inspect.currentframe()
         try:
             frame = current.f_back.f_back
             symbols = dict(frame.f_globals)

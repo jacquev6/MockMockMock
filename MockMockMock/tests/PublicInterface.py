@@ -22,9 +22,6 @@ class PublicInterface(unittest.TestCase):
         self.mocks = MockMockMock.Engine()
         self.myMock = self.mocks.create("myMock")
 
-    # def testMockMockMock(self):
-    #     self.assertEqual(self.dir(MockMockMock), ["Engine", "MockException", "TestCase", "engine", "tests"])
-
     def testEngine(self):
         self.assertEqual(self.dir(self.mocks), ["alternative", "atomic", "create", "optional", "ordered", "records", "repeated", "replace", "tearDown", "unordered"])
         self.assertFalse(isCallable(self.mocks))

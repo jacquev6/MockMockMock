@@ -11,3 +11,7 @@ Technical improvements
 - Allow positional arguments (*args) to be passed by name (**kwds)
 - Check that expected properties do not allow call and that expected method calls require call
 - Be thread safe
+
+
+
+mock2 = mock.expect.foo.andReturnMock()  # foo returns the mock2.object

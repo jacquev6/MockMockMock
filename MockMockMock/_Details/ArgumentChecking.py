@@ -15,3 +15,6 @@ class Equality:
             and len(args) == len(self.__args)
             and all((a is b or a == b) for (a, b) in zip(args, self.__args))
         )
+
+
+# @todo Anything: a validator that accepts Anything

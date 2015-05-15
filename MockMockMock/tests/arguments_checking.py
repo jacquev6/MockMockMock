@@ -5,7 +5,7 @@
 import unittest
 
 import MockMockMock
-import MockMockMock.argument_checking
+import MockMockMock.arguments_checking
 
 
 class ArgumentCheckers(unittest.TestCase):
@@ -29,7 +29,7 @@ class ArgumentCheckers(unittest.TestCase):
     # def testRangeChecker(self):
 
     def testEqualityChecker(self):
-        c = MockMockMock.argument_checking.Equality((1, 2, 3), {1: 1, 2: 2, 3: 3})
+        c = MockMockMock.arguments_checking.Equality((1, 2, 3), {1: 1, 2: 2, 3: 3})
         self.assertTrue(c((1, 2, 3), {1: 1, 2: 2, 3: 3}))
         self.assertFalse(c((1, 2, 3), {1: 1, 2: 2, 3: 4}))
         self.assertFalse(c((1, 2, 4), {1: 1, 2: 2, 3: 3}))

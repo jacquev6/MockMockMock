@@ -4,7 +4,7 @@
 
 import MockMockMock
 from .expectation import Expectation
-import argument_checking
+import arguments_checking
 
 
 class AnyAttribute:
@@ -59,7 +59,7 @@ class CallableExpectationProxy(BasicExpectationProxy):
         self.__expectation = expectation
 
     def __call__(self, *args, **kwds):
-        return self.withArguments(argument_checking.Equality(args, kwds))
+        return self.withArguments(arguments_checking.Equality(args, kwds))
 
     def withArguments(self, checker):
         self.__expectation.expectCall(checker)

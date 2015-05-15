@@ -8,8 +8,8 @@ import MockMockMock
 import MockMockMock.arguments_checking
 
 
-class ArgumentCheckers(unittest.TestCase):
-    def testCheckerIsUsedByCall(self):
+class ArgumentsCheckersTestCase(unittest.TestCase):
+    def test_checker_is_used_by_call(self):
         # We use a myMock...
         checker = MockMockMock.Engine().create("checker")
         checker.expect((12,), {}).andReturn(True)
@@ -24,11 +24,11 @@ class ArgumentCheckers(unittest.TestCase):
             m.object.foobar(13)
         self.assertEqual(str(cm.exception), "m.foobar called with bad arguments (13,) {}")
 
-    # def testIdentityChecker(self):
-    # def testTypeChecker(self):
-    # def testRangeChecker(self):
+    # @todo def test_identity_checker(self):
+    # @todo def test_type_checker(self):
+    # @todo def test_range_checker(self):
 
-    def testEqualityChecker(self):
+    def test_equality_checker(self):
         c = MockMockMock.arguments_checking.Equality((1, 2, 3), {1: 1, 2: 2, 3: 3})
         self.assertTrue(c((1, 2, 3), {1: 1, 2: 2, 3: 3}))
         self.assertFalse(c((1, 2, 3), {1: 1, 2: 2, 3: 4}))

@@ -7,21 +7,21 @@ import unittest
 import MockMockMock
 
 
-class SequenceBetweenSeveralLinkedMocks(unittest.TestCase):
+class SequenceOfLinkedMocksTestCase(unittest.TestCase):
     def setUp(self):
-        unittest.TestCase.setUp(self)
+        super(SequenceOfLinkedMocksTestCase, self).setUp()
         self.mocks = MockMockMock.Engine()
         self.m1 = self.mocks.create("m1")
         self.m2 = self.mocks.create("m2")
 
-    def testShortCorrectSequence(self):
+    def test_short_correct_sequence(self):
         self.m1.expect.foobar(42)
         self.m2.expect.foobar(43)
         self.m1.object.foobar(42)
         self.m2.object.foobar(43)
         self.mocks.tearDown()
 
-    def testShortInvertedSequence(self):
+    def test_short_inverted_sequence(self):
         self.m1.expect.foobar(42)
         self.m2.expect.foobar(43)
         with self.assertRaises(MockMockMock.MockException) as cm:

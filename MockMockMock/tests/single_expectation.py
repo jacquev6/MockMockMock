@@ -2,8 +2,6 @@
 
 # Copyright 2013-2015 Vincent Jacques <vincent@vincent-jacques.net>
 
-import unittest
-
 import MockMockMock
 
 
@@ -11,67 +9,63 @@ class TestException(Exception):
     pass
 
 
-class SingleExpectation(unittest.TestCase):
+class SingleExpectationTestCase(MockMockMock.TestCase):
     def setUp(self):
-        unittest.TestCase.setUp(self)
-        self.mocks = MockMockMock.Engine()
-        self.myMock = self.mocks.create("myMock")
+        super(SingleExpectationTestCase, self).setUp()
+        self.mock = self.mocks.create("mock")
 
-    def tearDown(self):
-        self.mocks.tearDown()
+    def test_method_call(self):
+        self.mock.expect.foobar()
+        self.mock.object.foobar()
 
-    def testMethodCall(self):
-        self.myMock.expect.foobar()
-        self.myMock.object.foobar()
+    def test_method_call_with_simple_argument(self):
+        self.mock.expect.foobar(42)
+        self.mock.object.foobar(42)
 
-    def testMethodCallWithSimpleArgument(self):
-        self.myMock.expect.foobar(42)
-        self.myMock.object.foobar(42)
-
-    def testMethodCallWithReturn(self):
+    def test_method_call_with_return(self):
         returnValue = object()
-        self.myMock.expect.foobar().andReturn(returnValue)
-        self.assertIs(self.myMock.object.foobar(), returnValue)
+        self.mock.expect.foobar().andReturn(returnValue)
+        self.assertIs(self.mock.object.foobar(), returnValue)
 
-    def testPropertyWithReturn(self):
-        self.myMock.expect.foobar.andReturn(42)
-        self.assertEqual(self.myMock.object.foobar, 42)
+    def test_property_with_return(self):
+        self.mock.expect.foobar.andReturn(42)
+        self.assertEqual(self.mock.object.foobar, 42)
 
-    def testObjectCallWithArgumentsAndReturn(self):
-        self.myMock.expect(43, 44).andReturn(42)
-        self.assertEqual(self.myMock.object(43, 44), 42)
+    def test_object_call_with_arguments_and_return(self):
+        self.mock.expect(43, 44).andReturn(42)
+        self.assertEqual(self.mock.object(43, 44), 42)
 
-    def testObjectCallWithCustomArgumentChecker(self):
+    def test_object_call_with_custom_arguments_checker(self):
         # See the hack in AnyAttribute.__getattr__
-        self.myMock.expect._call_.withArguments(lambda args, kwds: True).andReturn(42)
-        self.assertEqual(self.myMock.object(43, 44), 42)
+        self.mock.expect._call_.withArguments(lambda args, kwds: True).andReturn(42)
+        self.assertEqual(self.mock.object(43, 44), 42)
 
-    def testMethodCallWithRaise(self):
-        self.myMock.expect.foobar().andRaise(TestException())
+    def test_method_call_with_raise(self):
+        self.mock.expect.foobar().andRaise(TestException())
         with self.assertRaises(TestException):
-            self.myMock.object.foobar()
+            self.mock.object.foobar()
 
-    def testPropertyWithRaise(self):
-        self.myMock.expect.foobar.andRaise(TestException())
+    def test_property_with_raise(self):
+        self.mock.expect.foobar.andRaise(TestException())
         with self.assertRaises(TestException):
-            self.myMock.object.foobar
+            self.mock.object.foobar
 
-    def testMethodCallWithSpecificAction(self):
+    def test_method_call_with_specific_action(self):
         self.check = False
 
         def f():
             self.check = True
 
-        self.myMock.expect.foobar().andExecute(f)
-        self.myMock.object.foobar()
+        self.mock.expect.foobar().andExecute(f)
+        self.mock.object.foobar()
         self.assertTrue(self.check)
 
-    def testPropertyWithSpecificAction(self):
+    def test_property_with_specific_action(self):
         self.check = False
 
         def f():
             self.check = True
 
-        self.myMock.expect.foobar.andExecute(f)
-        self.myMock.object.foobar
+        self.mock.expect.foobar.andExecute(f)
+        self.mock.object.foobar
         self.assertTrue(self.check)

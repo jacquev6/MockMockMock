@@ -2,67 +2,80 @@
 
 # Copyright 2013-2015 Vincent Jacques <vincent@vincent-jacques.net>
 
-import unittest
 import collections
+import unittest
 
 import MockMockMock
 
 
-def isCallable(x):
+def is_callable(x):
     return isinstance(x, collections.Callable)
 
 
-class TestException(Exception):
-    pass
-
-
-class PublicInterface(unittest.TestCase):
+class PublicInterfaceTestCase(unittest.TestCase):
     def setUp(self):
-        unittest.TestCase.setUp(self)
+        super(PublicInterfaceTestCase, self).setUp()
         self.mocks = MockMockMock.Engine()
-        self.myMock = self.mocks.create("myMock")
+        self.mock = self.mocks.create("mock")
 
-    def testEngine(self):
-        self.assertEqual(self.dir(self.mocks), ["alternative", "atomic", "create", "optional", "ordered", "records", "repeated", "replace", "tearDown", "unordered"])
-        self.assertFalse(isCallable(self.mocks))
+    # No tearDown, because we really don't want to check that expectations were called
 
-    def testMock(self):
-        self.assertEqual(self.dir(self.myMock), ["expect", "object", "record"])
-        self.assertFalse(isCallable(self.myMock))
+    def test_engine(self):
+        self.assertEqual(
+            self.dir(self.mocks),
+            [
+                "alternative",
+                "atomic",
+                "create",
+                "optional",
+                "ordered",
+                "records",
+                "repeated",
+                "replace",
+                "tearDown",
+                "unordered",
+            ]
+        )
+        self.assertFalse(is_callable(self.mocks))
 
-    def testExpect(self):
-        self.assertEqual(self.dir(self.myMock.expect), [])
-        self.assertTrue(isCallable(self.myMock.expect))
+    def test_mock(self):
+        self.assertEqual(self.mock.__class__, MockMockMock.Mock)
+        self.assertEqual(self.dir(self.mock), ["expect", "object", "record"])
+        self.assertFalse(is_callable(self.mock))
 
-    def testExpectation(self):
-        self.assertEqual(self.dir(self.myMock.expect.foobar), ["andExecute", "andRaise", "andReturn", "withArguments"])
-        self.assertTrue(isCallable(self.myMock.expect.foobar))
+    def test_expect(self):
+        self.assertEqual(self.dir(self.mock.expect), [])
+        self.assertTrue(is_callable(self.mock.expect))
 
-    def testCalledExpectation(self):
-        self.assertEqual(self.dir(self.myMock.expect.foobar(42)), ["andExecute", "andRaise", "andReturn"])
-        self.assertFalse(isCallable(self.myMock.expect.foobar(42)))
-        self.assertEqual(self.dir(self.myMock.expect.foobar.withArguments(42)), ["andExecute", "andRaise", "andReturn"])
-        self.assertFalse(isCallable(self.myMock.expect.foobar.withArguments(42)))
+    def test_expectation(self):
+        self.assertEqual(self.dir(self.mock.expect.foobar), ["andExecute", "andRaise", "andReturn", "withArguments"])
+        self.assertTrue(is_callable(self.mock.expect.foobar))
 
-    def testCalledThenAndedExpectation(self):
-        self.assertEqual(self.dir(self.myMock.expect.foobar(42).andReturn(12)), [])
-        self.assertFalse(isCallable(self.myMock.expect.foobar(42).andReturn(12)))
-        self.assertEqual(self.dir(self.myMock.expect.foobar(42).andRaise(TestException())), [])
-        self.assertFalse(isCallable(self.myMock.expect.foobar(42).andRaise(TestException())))
-        self.assertEqual(self.dir(self.myMock.expect.foobar(42).andExecute(lambda: 12)), [])
-        self.assertFalse(isCallable(self.myMock.expect.foobar(42).andExecute(lambda: 12)))
+    def test_called_expectation(self):
+        self.assertEqual(self.dir(self.mock.expect.foobar(42)), ["andExecute", "andRaise", "andReturn"])
+        self.assertFalse(is_callable(self.mock.expect.foobar(42)))
+        self.assertEqual(self.dir(self.mock.expect.foobar.withArguments(42)), ["andExecute", "andRaise", "andReturn"])
+        self.assertFalse(is_callable(self.mock.expect.foobar.withArguments(42)))
 
-    def testAndedExpectation(self):
-        self.assertEqual(self.dir(self.myMock.expect.foobar.andReturn(12)), [])
-        self.assertFalse(isCallable(self.myMock.expect.foobar.andReturn(12)))
-        self.assertEqual(self.dir(self.myMock.expect.foobar.andRaise(TestException())), [])
-        self.assertFalse(isCallable(self.myMock.expect.foobar.andRaise(TestException())))
-        self.assertEqual(self.dir(self.myMock.expect.foobar.andExecute(lambda: 12)), [])
-        self.assertFalse(isCallable(self.myMock.expect.foobar.andExecute(lambda: 12)))
+    def test_called_then_anded_expectation(self):
+        self.assertEqual(self.dir(self.mock.expect.foobar(42).andReturn(12)), [])
+        self.assertFalse(is_callable(self.mock.expect.foobar(42).andReturn(12)))
+        self.assertEqual(self.dir(self.mock.expect.foobar(42).andRaise(None)), [])
+        self.assertFalse(is_callable(self.mock.expect.foobar(42).andRaise(None)))
+        self.assertEqual(self.dir(self.mock.expect.foobar(42).andExecute(None)), [])
+        self.assertFalse(is_callable(self.mock.expect.foobar(42).andExecute(None)))
 
-    def testObject(self):
-        # @todo Expose expected calls in myMock.object.__dir__. And check isCallable matches what's been expected.
-        self.assertEqual(self.dir(self.myMock.object), [])
+    def test_anded_expectation(self):
+        self.assertEqual(self.dir(self.mock.expect.foobar.andReturn(12)), [])
+        self.assertFalse(is_callable(self.mock.expect.foobar.andReturn(12)))
+        self.assertEqual(self.dir(self.mock.expect.foobar.andRaise(None)), [])
+        self.assertFalse(is_callable(self.mock.expect.foobar.andRaise(None)))
+        self.assertEqual(self.dir(self.mock.expect.foobar.andExecute(None)), [])
+        self.assertFalse(is_callable(self.mock.expect.foobar.andExecute(None)))
+
+    def test_object(self):
+        # @todo Expose expected calls in mock.object.__dir__. And check is_callable matches what's been expected. Even for an attribute that's first expected to not be called, then expected to be called: the object's corresponding attribute should show that behavior.
+        self.assertEqual(self.dir(self.mock.object), [])
 
     def dir(self, o):
         return sorted(a for a in dir(o) if not a.startswith("_"))

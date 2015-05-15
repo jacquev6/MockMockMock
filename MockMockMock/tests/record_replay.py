@@ -7,157 +7,199 @@ import unittest
 import MockMockMock
 
 
-# @todo Replace by a mock :-D
+# This could be replaced by a mock :-D. But hum, keep it simple.
 class TestDependency:
-    theException = Exception("ga", "bu")
+    the_exception = Exception("ga", "bu")
 
     def __init__(self):
-        self.instanceProperty = 49
+        self.instance_property = 49
 
-    classProperty = 48
+    class_property = 48
 
     @property
-    def propertyFromGetter(self):
+    def property_from_getter(self):
         return 50
 
     @property
-    def raisingProperty(self):
-        raise self.theException
+    def raising_property(self):
+        raise self.the_exception
 
-    def instanceMethod(self, x, y, *args, **kwds):
+    def instance_method(self, x, y, *args, **kwds):
         return str((x, y, args, sorted(kwds.iteritems())))
 
     @classmethod
-    def classMethod(cls, x, y):
+    def class_method(cls, x, y):
         return (y, x, "foo")
 
     @staticmethod
-    def staticMethod(x, y):
+    def static_method(x, y):
         return (y, x, "bar")
 
     def __call__(self, x, y):
         return (y, x, "baz")
 
-    def raiseException(self, *args, **kwds):
-        raise self.theException
+    def raise_exception(self, *args, **kwds):
+        raise self.the_exception
 
 
 class RecordTestCase(unittest.TestCase):
     def setUp(self):
-        unittest.TestCase.setUp(self)
-        self.engine = MockMockMock.Engine()
-        dependencyMock = self.engine.create("dependency")
-        self.injectedDependency = dependencyMock.record(TestDependency())
+        super(RecordTestCase, self).setUp()
+        self.mocks = MockMockMock.Engine()
+        mock = self.mocks.create("dependency")
+        self.recorded = mock.record(TestDependency())
 
-    def testInstanceMethod(self):
-        self.assertEqual(self.injectedDependency.instanceMethod(42, 43, 44, 45, toto=46, tutu=47), "(42, 43, (44, 45), [('toto', 46), ('tutu', 47)])")
-        self.engine.tearDown()
-        self.assertEqual(self.engine.records, [
-            {
-                "object": "dependency",
-                "attribute": "instanceMethod",
-                "arguments": (42, 43, 44, 45),
-                "keywords": dict(toto=46, tutu=47),
-                "return": "(42, 43, (44, 45), [('toto', 46), ('tutu', 47)])",
-            }
-        ])
+    def test_instance_method(self):
+        self.assertEqual(
+            self.recorded.instance_method(42, 43, 44, 45, toto=46, tutu=47),
+            "(42, 43, (44, 45), [('toto', 46), ('tutu', 47)])"
+        )
+        self.assertEqual(
+            self.mocks.records,
+            [
+                {
+                    "object": "dependency",
+                    "attribute": "instance_method",
+                    "arguments": (42, 43, 44, 45),
+                    "keywords": dict(toto=46, tutu=47),
+                    "return": "(42, 43, (44, 45), [('toto', 46), ('tutu', 47)])",
+                }
+            ]
+        )
 
-    def testClassMethod(self):
-        self.assertEqual(self.injectedDependency.classMethod(42, y=43), (43, 42, "foo"))
-        self.engine.tearDown()
-        self.assertEqual(self.engine.records, [
-            {
-                "object": "dependency",
-                "attribute": "classMethod",
-                "arguments": (42, ),
-                "keywords": dict(y=43),
-                "return": (43, 42, "foo"),
-            }
-        ])
+    def test_class_method(self):
+        self.assertEqual(self.recorded.class_method(42, y=43), (43, 42, "foo"))
+        self.assertEqual(
+            self.mocks.records,
+            [
+                {
+                    "object": "dependency",
+                    "attribute": "class_method",
+                    "arguments": (42, ),
+                    "keywords": dict(y=43),
+                    "return": (43, 42, "foo"),
+                }
+            ]
+        )
 
-    def testStaticMethod(self):
-        self.assertEqual(self.injectedDependency.staticMethod(42, y=43), (43, 42, "bar"))
-        self.engine.tearDown()
-        self.assertEqual(self.engine.records, [
-            {
-                "object": "dependency",
-                "attribute": "staticMethod",
-                "arguments": (42, ),
-                "keywords": dict(y=43),
-                "return": (43, 42, "bar"),
-            }
-        ])
+    def test_static_method(self):
+        self.assertEqual(self.recorded.static_method(42, y=43), (43, 42, "bar"))
+        self.assertEqual(
+            self.mocks.records,
+            [
+                {
+                    "object": "dependency",
+                    "attribute": "static_method",
+                    "arguments": (42, ),
+                    "keywords": dict(y=43),
+                    "return": (43, 42, "bar"),
+                }
+            ]
+        )
 
-    def testCallObject(self):
-        self.assertEqual(self.injectedDependency(42, y=43), (43, 42, "baz"))
-        self.engine.tearDown()
-        self.assertEqual(self.engine.records, [
-            {
-                "object": "dependency",
-                "attribute": "__call__",
-                "arguments": (42, ),
-                "keywords": dict(y=43),
-                "return": (43, 42, "baz"),
-            }
-        ])
+    def test_call_object(self):
+        self.assertEqual(self.recorded(42, y=43), (43, 42, "baz"))
+        self.assertEqual(
+            self.mocks.records,
+            [
+                {
+                    "object": "dependency",
+                    "attribute": "__call__",
+                    "arguments": (42, ),
+                    "keywords": dict(y=43),
+                    "return": (43, 42, "baz"),
+                }
+            ]
+        )
 
-    def testClassProperty(self):
-        self.assertEqual(self.injectedDependency.classProperty, 48)
-        self.engine.tearDown()
-        self.assertEqual(self.engine.records, [
-            {
-                "object": "dependency",
-                "attribute": "classProperty",
-                "return": 48,
-            }
-        ])
+    def test_class_property(self):
+        self.assertEqual(self.recorded.class_property, 48)
+        self.assertEqual(
+            self.mocks.records,
+            [
+                {
+                    "object": "dependency",
+                    "attribute": "class_property",
+                    "return": 48,
+                }
+            ]
+        )
 
-    def testInstanceProperty(self):
-        self.assertEqual(self.injectedDependency.instanceProperty, 49)
-        self.engine.tearDown()
-        self.assertEqual(self.engine.records, [
-            {
-                "object": "dependency",
-                "attribute": "instanceProperty",
-                "return": 49,
-            }
-        ])
+    def test_instance_property(self):
+        self.assertEqual(self.recorded.instance_property, 49)
+        self.assertEqual(
+            self.mocks.records,
+            [
+                {
+                    "object": "dependency",
+                    "attribute": "instance_property",
+                    "return": 49,
+                }
+            ]
+        )
 
-    def testPropertyFromGetter(self):
-        self.assertEqual(self.injectedDependency.propertyFromGetter, 50)
-        self.engine.tearDown()
-        self.assertEqual(self.engine.records, [
-            {
-                "object": "dependency",
-                "attribute": "propertyFromGetter",
-                "return": 50,
-            }
-        ])
+    def test_property_from_getter(self):
+        self.assertEqual(self.recorded.property_from_getter, 50)
+        self.assertEqual(
+            self.mocks.records,
+            [
+                {
+                    "object": "dependency",
+                    "attribute": "property_from_getter",
+                    "return": 50,
+                }
+            ]
+        )
 
-    def testExceptionInMethod(self):
+    def test_exception_in_method(self):
         with self.assertRaises(Exception) as cm:
-            self.injectedDependency.raiseException(42, 43, z=45)
-        self.assertIs(cm.exception, TestDependency.theException)
-        self.engine.tearDown()
-        self.assertEqual(self.engine.records, [
-            {
-                "object": "dependency",
-                "attribute": "raiseException",
-                "arguments": (42, 43),
-                "keywords": {"z": 45},
-                "exception": TestDependency.theException,
-            }
-        ])
+            self.recorded.raise_exception(42, 43, z=45)
+        self.assertIs(cm.exception, TestDependency.the_exception)
+        self.assertEqual(
+            self.mocks.records,
+            [
+                {
+                    "object": "dependency",
+                    "attribute": "raise_exception",
+                    "arguments": (42, 43),
+                    "keywords": {"z": 45},
+                    "exception": TestDependency.the_exception,
+                }
+            ]
+        )
 
-    def testExceptionInProperty(self):
+    def test_exception_in_property(self):
         with self.assertRaises(Exception) as cm:
-            self.injectedDependency.raisingProperty
-        self.assertIs(cm.exception, TestDependency.theException)
-        self.engine.tearDown()
-        self.assertEqual(self.engine.records, [
-            {
-                "object": "dependency",
-                "attribute": "raisingProperty",
-                "exception": TestDependency.theException,
-            }
-        ])
+            self.recorded.raising_property
+        self.assertIs(cm.exception, TestDependency.the_exception)
+        self.assertEqual(
+            self.mocks.records,
+            [
+                {
+                    "object": "dependency",
+                    "attribute": "raising_property",
+                    "exception": TestDependency.the_exception,
+                }
+            ]
+        )
+
+    def test_several_records(self):
+        self.recorded.instance_property
+        self.recorded.instance_method(1, 2, 3)
+        self.assertEqual(
+            self.mocks.records,
+            [
+                {
+                    "object": "dependency",
+                    "attribute": "instance_property",
+                    "return": 49,
+                },
+                {
+                    "object": "dependency",
+                    "attribute": "instance_method",
+                    "arguments": (1, 2, 3),
+                    "keywords": {},
+                    "return": "(1, 2, (3,), [])",
+                },
+            ]
+        )

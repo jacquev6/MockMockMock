@@ -5,21 +5,17 @@
 import unittest
 import os.path
 import sys
-atLeastPython3 = sys.hexversion >= 0x03000000
+python3 = sys.hexversion >= 0x03000000
 
 import MockMockMock
 
 
-class TestException(Exception):
-    pass
-
-
-class SystemCalls(unittest.TestCase):
+class SystemCallsTestCase(unittest.TestCase):
     def setUp(self):
-        unittest.TestCase.setUp(self)
+        super(SystemCallsTestCase, self).setUp()
         self.mocks = MockMockMock.Engine()
 
-    def testMockGloballyImportedFunction(self):
+    def test_mock_globally_imported_function(self):
         original = os.path.exists
         m = self.mocks.replace("os.path.exists")
         m.expect("foo").andReturn(True)
@@ -28,7 +24,7 @@ class SystemCalls(unittest.TestCase):
         self.assertIs(os.path.exists, original)
         self.assertFalse(os.path.exists("foo"))
 
-    def testMockLocallyImportedFunction(self):
+    def test_mock_locally_imported_function(self):
         import subprocess
         original = subprocess.check_output
         m = self.mocks.replace("subprocess.check_output")
@@ -36,4 +32,4 @@ class SystemCalls(unittest.TestCase):
         self.assertEqual(subprocess.check_output(["foo", "bar"]), "baz\n")
         self.mocks.tearDown()
         self.assertIs(subprocess.check_output, original)
-        self.assertEqual(subprocess.check_output(["echo", "toto"]), b"toto\n" if atLeastPython3 else "toto\n")
+        self.assertEqual(subprocess.check_output(["echo", "toto"]), b"toto\n" if python3 else "toto\n")

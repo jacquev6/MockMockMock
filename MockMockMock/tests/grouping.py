@@ -6,6 +6,8 @@ import unittest
 
 import MockMockMock
 
+# @todo Normalize (pep 8)
+# @todo Refactor?
 
 groupMakers = {
     "o": lambda f: f.ordered,

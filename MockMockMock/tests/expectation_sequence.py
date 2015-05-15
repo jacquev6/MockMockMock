@@ -7,44 +7,44 @@ import unittest
 import MockMockMock
 
 
-class ExpectationSequence(unittest.TestCase):
+class ExpectationSequenceTestCase(unittest.TestCase):
     def setUp(self):
-        unittest.TestCase.setUp(self)
+        super(ExpectationSequenceTestCase, self).setUp()
         self.mocks = MockMockMock.Engine()
-        self.myMock = self.mocks.create("myMock")
+        self.mock = self.mocks.create("mock")
 
-    def testTwoCalls(self):
-        self.myMock.expect.foobar()
-        self.myMock.expect.barbaz()
-        self.myMock.object.foobar()
-        self.myMock.object.barbaz()
+    def test_two_calls(self):
+        self.mock.expect.foobar()
+        self.mock.expect.barbaz()
+        self.mock.object.foobar()
+        self.mock.object.barbaz()
         self.mocks.tearDown()
 
-    def testCallNotExpectedFirst(self):
-        self.myMock.expect.foobar()
-        self.myMock.expect.barbaz()
+    def test_call_not_expected_first(self):
+        self.mock.expect.foobar()
+        self.mock.expect.barbaz()
         with self.assertRaises(MockMockMock.MockException) as cm:
-            self.myMock.object.barbaz()
-        self.assertEqual(str(cm.exception), "myMock.barbaz called instead of myMock.foobar")
+            self.mock.object.barbaz()
+        self.assertEqual(str(cm.exception), "mock.barbaz called instead of mock.foobar")
 
-    def testCallWithArgumentsNotExpectedFirst(self):
-        self.myMock.expect.foobar(42)
-        self.myMock.expect.foobar(43)
+    def test_call_with_arguments_not_expected_first(self):
+        self.mock.expect.foobar(42)
+        self.mock.expect.foobar(43)
         with self.assertRaises(MockMockMock.MockException) as cm:
-            self.myMock.object.foobar(43)
-        self.assertEqual(str(cm.exception), "myMock.foobar called with bad arguments (43,) {}")
+            self.mock.object.foobar(43)
+        self.assertEqual(str(cm.exception), "mock.foobar called with bad arguments (43,) {}")  # @todo Ask the argument checker for a description of expected arguments
 
-    def testManyCalls(self):
-        self.myMock.expect.foobar(1)
-        self.myMock.expect.foobar(2)
-        self.myMock.expect.foobar(3)
-        self.myMock.expect.foobar(4)
-        self.myMock.expect.foobar(5)
-        self.myMock.expect.foobar(6)
-        self.myMock.object.foobar(1)
-        self.myMock.object.foobar(2)
-        self.myMock.object.foobar(3)
-        self.myMock.object.foobar(4)
-        self.myMock.object.foobar(5)
-        self.myMock.object.foobar(6)
+    def test_many_calls(self):
+        self.mock.expect.foobar(1)
+        self.mock.expect.foobar(2)
+        self.mock.expect.foobar(3)
+        self.mock.expect.foobar(4)
+        self.mock.expect.foobar(5)
+        self.mock.expect.foobar(6)
+        self.mock.object.foobar(1)
+        self.mock.object.foobar(2)
+        self.mock.object.foobar(3)
+        self.mock.object.foobar(4)
+        self.mock.object.foobar(5)
+        self.mock.object.foobar(6)
         self.mocks.tearDown()

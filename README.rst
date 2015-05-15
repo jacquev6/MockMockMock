@@ -49,10 +49,28 @@ Install from PyPI::
 
     $ pip install MockMockMock
 
-.. Warning, these are NOT doctests because doctests aren't displayed on GitHub.
+Import:
 
-Import::
+>>> from MockMockMock import *
 
-    >>> from MockMockMock import *
+Write some code to test:
 
-@todoc quick start
+>>> def f(source):
+...   return source.get(42) * 2
+
+Mock:
+
+>>> mocks = Engine()
+>>> mock = mocks.create("mocks")
+
+Expect:
+
+>>> mock.expect.get(42).andReturn(12)
+
+Test:
+
+>>> assert f(mock.object) == 24
+
+Verify all expected calls have been done:
+
+>>> mocks.tearDown()

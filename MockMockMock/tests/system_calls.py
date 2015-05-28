@@ -4,8 +4,6 @@
 
 import unittest
 import os.path
-import sys
-python3 = sys.hexversion >= 0x03000000
 
 import MockMockMock
 
@@ -32,4 +30,19 @@ class SystemCallsTestCase(unittest.TestCase):
         self.assertEqual(subprocess.check_output(["foo", "bar"]), "baz\n")
         self.mocks.tearDown()
         self.assertIs(subprocess.check_output, original)
-        self.assertEqual(subprocess.check_output(["echo", "toto"]), b"toto\n" if python3 else "toto\n")
+        self.assertEqual(subprocess.check_output(["echo", "toto"]), b"toto\n")
+
+    def test_mock_unexisting_thing(self):
+        with self.assertRaises(MockMockMock.MockException) as catcher:
+            self.mocks.replace("foo.bar")
+        self.assertEqual(catcher.exception.args, ("Unable to replace foo.bar",))
+
+    def test_mock_unexisting_intermediate_thing(self):
+        with self.assertRaises(MockMockMock.MockException) as catcher:
+            self.mocks.replace("os.foo.bar")
+        self.assertEqual(catcher.exception.args, ("Unable to replace os.foo.bar",))
+
+    def test_mock_unexisting_subthing(self):
+        with self.assertRaises(MockMockMock.MockException) as catcher:
+            self.mocks.replace("os.path.foobar")
+        self.assertEqual(catcher.exception.args, ("Unable to replace os.path.foobar",))

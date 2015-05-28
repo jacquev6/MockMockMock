@@ -2,11 +2,17 @@
 
 # Copyright 2013-2015 Vincent Jacques <vincent@vincent-jacques.net>
 
-import inspect
 import unittest
+
+
+class MockException(Exception):
+    """
+    @todoc
+    """
 
 from .expectation_grouping import OrderedExpectationGroup, UnorderedExpectationGroup, AtomicExpectationGroup, OptionalExpectationGroup, AlternativeExpectationGroup, RepeatedExpectationGroup
 from .expectation_handling import ExpectationHandler
+from .replacer import Replacer
 
 # @todo When an arguments validator fails, include description of failure in exception (see PyGithub's replay mode: comparers have to log by themselves to make it practical)
 
@@ -41,12 +47,6 @@ class TestCase(unittest.TestCase):
         super(TestCase, self).tearDown()
 
 
-class MockException(Exception):
-    """
-    @todoc
-    """
-
-
 class Engine:
     """
     The main class in MockMockMock.
@@ -55,7 +55,7 @@ class Engine:
     """
     def __init__(self):
         self.__handler = ExpectationHandler(OrderedExpectationGroup())
-        self.__replaced = []
+        self.__replacer = Replacer()
 
     def create(self, name):
         """
@@ -70,35 +70,15 @@ class Engine:
         """
         @todoc
         """
-        # @todo Put that in a Replacer class.
-        container, attribute = self.__findByName(name)
-        self.__replaced.append((container, attribute, getattr(container, attribute)))
-        m = self.create(name)
-        setattr(container, attribute, m.object)
-        return m
-
-    @staticmethod
-    def __findByName(name):
-        names = name.split(".")
-        attribute = names[-1]
-        current = inspect.currentframe()
-        try:
-            frame = current.f_back.f_back
-            symbols = dict(frame.f_globals)
-            symbols.update(frame.f_locals)
-            container = symbols[names[0]]
-        finally:
-            del current
-        for name in names[1:-1]:
-            container = getattr(container, name)
-        return container, attribute
+        mock = self.create(name)
+        self.__replacer.replace(name, mock)
+        return mock
 
     def tearDown(self):
         """
         @todoc
         """
-        for container, attribute, value in self.__replaced:
-            setattr(container, attribute, value)
+        self.__replacer.tear_down()
         self.__handler.tearDown()
 
     @property

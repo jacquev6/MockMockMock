@@ -12,13 +12,13 @@ class ArgumentsCheckersTestCase(unittest.TestCase):
     def test_checker_is_used_by_call(self):
         # We use a myMock...
         checker = MockMockMock.Engine().create("checker")
-        checker.expect((12,), {}).andReturn(True)
-        checker.expect((13,), {}).andReturn(False)
+        checker.expect((12,), {}).and_return(True)
+        checker.expect((13,), {}).and_return(False)
 
         # ...to test a mock!
         m = MockMockMock.Engine().create("m")
-        m.expect.foobar.withArguments(checker.object).andReturn(42)
-        m.expect.foobar.withArguments(checker.object).andReturn(43)
+        m.expect.foobar.with_arguments(checker.object).and_return(42)
+        m.expect.foobar.with_arguments(checker.object).and_return(43)
         self.assertEqual(m.object.foobar(12), 42)
         with self.assertRaises(MockMockMock.MockException) as cm:
             m.object.foobar(13)

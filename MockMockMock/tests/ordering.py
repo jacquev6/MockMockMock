@@ -15,10 +15,10 @@ class OrderingTestCase(unittest.TestCase):
 
     def test_unordered_group_of_same_method(self):
         with self.mocks.unordered:
-            self.mock.expect.foobar(1).andReturn(11)
-            self.mock.expect.foobar(1).andReturn(13)
-            self.mock.expect.foobar(2).andReturn(12)
-            self.mock.expect.foobar(1).andReturn(14)
+            self.mock.expect.foobar(1).and_return(11)
+            self.mock.expect.foobar(1).and_return(13)
+            self.mock.expect.foobar(2).and_return(12)
+            self.mock.expect.foobar(1).and_return(14)
         self.assertEqual(self.mock.object.foobar(2), 12)
         self.assertEqual(self.mock.object.foobar(1), 11)
         self.assertEqual(self.mock.object.foobar(1), 13)

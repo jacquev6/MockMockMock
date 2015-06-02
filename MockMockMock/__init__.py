@@ -43,7 +43,7 @@ class TestCase(unittest.TestCase):
         """
         Do not forget to call the base version if you override it.
         """
-        self.__mocks.tearDown()
+        self.__mocks.tear_down()
         super(TestCase, self).tearDown()
 
 
@@ -74,61 +74,66 @@ class Engine:
         self.__replacer.replace(name, mock)
         return mock
 
-    def tearDown(self):
+    def tear_down(self):
         """
         @todoc
         """
         self.__replacer.tear_down()
         self.__handler.tearDown()
 
+    tearDown = tear_down
+    """
+    Alias for :meth:`tear_down`.
+    """
+
     @property
     def unordered(self):
         """
         @todoc with link to user guide (Expectations grouping)
         """
-        return self.__handler.pushGroup(UnorderedExpectationGroup())
+        return self.__handler.push_group(UnorderedExpectationGroup())
 
     @property
     def ordered(self):
         """
         @todoc with link to user guide (Expectations grouping)
         """
-        return self.__handler.pushGroup(OrderedExpectationGroup())
+        return self.__handler.push_group(OrderedExpectationGroup())
 
     @property
     def atomic(self):
         """
         @todoc with link to user guide (Expectations grouping)
         """
-        return self.__handler.pushGroup(AtomicExpectationGroup())
+        return self.__handler.push_group(AtomicExpectationGroup())
 
     @property
     def optional(self):
         """
         @todoc with link to user guide (Expectations grouping)
         """
-        return self.__handler.pushGroup(OptionalExpectationGroup())
+        return self.__handler.push_group(OptionalExpectationGroup())
 
     @property
     def alternative(self):
         """
         @todoc with link to user guide (Expectations grouping)
         """
-        return self.__handler.pushGroup(AlternativeExpectationGroup())
+        return self.__handler.push_group(AlternativeExpectationGroup())
 
     @property
     def repeated(self):
         """
         @todoc with link to user guide (Expectations grouping)
         """
-        return self.__handler.pushGroup(RepeatedExpectationGroup())
+        return self.__handler.push_group(RepeatedExpectationGroup())
 
     @property
     def records(self):
         """
         @todoc with link to user guide (Recording)
         """
-        return self.__handler.getRecordedCalls()
+        return self.__handler.get_recorded_calls()
 
 
 class Mock(object):
@@ -157,9 +162,9 @@ class Mock(object):
         """
         return self.__handler.object(self.__name)
 
-    def record(self, realObject):
+    def record(self, real_object):
         """
         @todoc
         """
-        # @todo In record mode, catch exceptions. Funny: there is not always a "return" key in getRecordedCalls
-        return self.__handler.record(self.__name, realObject)
+        # @todo In record mode, catch exceptions. Funny: there is not always a "return" key in get_recorded_calls
+        return self.__handler.record(self.__name, real_object)

@@ -71,7 +71,7 @@ Mock:
 
 Expect:
 
->>> mock.expect.get(42).andReturn(12)
+>>> mock.expect.get(42).and_return(12)
 
 Test:
 

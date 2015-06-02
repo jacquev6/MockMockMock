@@ -47,7 +47,7 @@ Then, in your test methods, there are two phases. First, instruct the mock about
 ::
 
     .   def testAverage(self):
-            self.source.expect.get().andReturn([42, 43, 44])
+            self.source.expect.get().and_return([42, 43, 44])
 
 ... then call your code, that will call the mock.
 
@@ -73,31 +73,31 @@ Expectations
 You can instruct the mock to expect successive calls::
 
         def testXxxx(self):
-            self.source.expect.get().andReturn([1, 2, 3, 4])
-            self.source.expect.isFinished().andReturn(True)
+            self.source.expect.get().and_return([1, 2, 3, 4])
+            self.source.expect.isFinished().and_return(True)
 
             self.assertEqual(self.stats.average(), 2.5)
 
 You can expect successive calls to the same method and have different behaviour each time::
 
         def testXxxx(self):
-            self.source.expect.get().andReturn([1, 2, 3, 4])
-            self.source.expect.get().andReturn([5, 6, 7])
-            self.source.expect.get().andReturn([])
+            self.source.expect.get().and_return([1, 2, 3, 4])
+            self.source.expect.get().and_return([5, 6, 7])
+            self.source.expect.get().and_return([])
 
             self.assertEqual(self.stats.average(), 4)
 
 You can expect arguments in method calls::
 
         def testXxxx(self):
-            self.source.expect.get(5).andReturn([1, 2, 3, 4, 5])
+            self.source.expect.get(5).and_return([1, 2, 3, 4, 5])
 
             self.assertEqual(self.stats.average(), 3)
 
 You can expect calls to properties as well::
 
         def testXxxx(self):
-            self.source.expect.name.andReturn("Mock")
+            self.source.expect.name.and_return("Mock")
 
             self.assertEqual(self.stats.getSourceName(), "Mock")
 
@@ -107,7 +107,7 @@ Behaviour
 You can simulate a source that raises exceptions::
 
         def testXxxx(self):
-            self.source.expect.get().andRaise(Exception())
+            self.source.expect.get().and_raise(Exception())
 
             self.assertRaises(Exception, self.stats.average)
 

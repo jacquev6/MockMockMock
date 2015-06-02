@@ -13,10 +13,10 @@ class Expectation(object):
         self.__action = lambda: None
 
     # expect
-    def expectCall(self, checker):
+    def expect_call(self, checker):
         self.__checker = checker
 
-    def setAction(self, action):
+    def set_action(self, action):
         self.__action = action
 
     # check
@@ -40,9 +40,9 @@ class AnyAttribute:
 
     def __getattr__(self, name):
         # @todo Fix this hack
-        # Hack to allow m.expect._call_.withArguments,
-        # because m.expect.__call__.withArguments fails,
-        # because function doesn't have attribute "withArguments"
+        # Hack to allow m.expect._call_.with_arguments,
+        # because m.expect.__call__.with_arguments fails,
+        # because function doesn't have attribute "with_arguments"
         if name == "_call_":
             name = "__call__"
         # End of hack
@@ -67,17 +67,16 @@ class BasicExpectationProxy:
     def __init__(self, expectation):
         self.__expectation = expectation
 
-    def andReturn(self, value):
-        return self.andExecute(lambda: value)
+    def and_return(self, value):
+        self.__expectation.set_action(lambda: value)
 
-    def andRaise(self, exception):
+    def and_raise(self, exception):
         def Raise():
             raise exception
-        return self.andExecute(Raise)
+        self.__expectation.set_action(Raise)
 
-    def andExecute(self, action):
-        self.__expectation.setAction(action)
-        return None
+    def and_execute(self, action):
+        self.__expectation.set_action(action)
 
 
 class CallableExpectationProxy(BasicExpectationProxy):
@@ -86,10 +85,10 @@ class CallableExpectationProxy(BasicExpectationProxy):
         self.__expectation = expectation
 
     def __call__(self, *args, **kwds):
-        return self.withArguments(arguments_checking.Equality(args, kwds))
+        return self.with_arguments(arguments_checking.Equality(args, kwds))
 
-    def withArguments(self, checker):
-        self.__expectation.expectCall(checker)
+    def with_arguments(self, checker):
+        self.__expectation.expect_call(checker)
         return BasicExpectationProxy(self.__expectation)
 
 
@@ -138,7 +137,7 @@ class ExpectationHandler(object):
         self.__currentGroup.addExpectation(expectation)
         return CallableExpectationProxy(expectation)
 
-    def pushGroup(self, group):
+    def push_group(self, group):
         self.__currentGroup.addGroup(group)
         self.__currentGroup = group
         return self.StackPoper(self)
@@ -227,5 +226,5 @@ class ExpectationHandler(object):
     def addRecordedCall(self, call):
         self.__recordedCalls.append(call)
 
-    def getRecordedCalls(self):
+    def get_recorded_calls(self):
         return self.__recordedCalls

@@ -14,4 +14,4 @@ Technical improvements
 
 
 
-mock2 = mock.expect.foo.andReturnMock()  # foo returns the mock2.object
+mock2 = mock.expect.foo.and_returnMock()  # foo returns the mock2.object

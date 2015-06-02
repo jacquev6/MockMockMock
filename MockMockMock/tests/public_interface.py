@@ -33,6 +33,7 @@ class PublicInterfaceTestCase(unittest.TestCase):
                 "repeated",
                 "replace",
                 "tearDown",
+                "tear_down",
                 "unordered",
             ]
         )
@@ -48,30 +49,30 @@ class PublicInterfaceTestCase(unittest.TestCase):
         self.assertTrue(is_callable(self.mock.expect))
 
     def test_expectation(self):
-        self.assertEqual(self.dir(self.mock.expect.foobar), ["andExecute", "andRaise", "andReturn", "withArguments"])
+        self.assertEqual(self.dir(self.mock.expect.foobar), ["and_execute", "and_raise", "and_return", "with_arguments"])
         self.assertTrue(is_callable(self.mock.expect.foobar))
 
     def test_called_expectation(self):
-        self.assertEqual(self.dir(self.mock.expect.foobar(42)), ["andExecute", "andRaise", "andReturn"])
+        self.assertEqual(self.dir(self.mock.expect.foobar(42)), ["and_execute", "and_raise", "and_return"])
         self.assertFalse(is_callable(self.mock.expect.foobar(42)))
-        self.assertEqual(self.dir(self.mock.expect.foobar.withArguments(42)), ["andExecute", "andRaise", "andReturn"])
-        self.assertFalse(is_callable(self.mock.expect.foobar.withArguments(42)))
+        self.assertEqual(self.dir(self.mock.expect.foobar.with_arguments(42)), ["and_execute", "and_raise", "and_return"])
+        self.assertFalse(is_callable(self.mock.expect.foobar.with_arguments(42)))
 
     def test_called_then_anded_expectation(self):
-        self.assertEqual(self.dir(self.mock.expect.foobar(42).andReturn(12)), [])
-        self.assertFalse(is_callable(self.mock.expect.foobar(42).andReturn(12)))
-        self.assertEqual(self.dir(self.mock.expect.foobar(42).andRaise(None)), [])
-        self.assertFalse(is_callable(self.mock.expect.foobar(42).andRaise(None)))
-        self.assertEqual(self.dir(self.mock.expect.foobar(42).andExecute(None)), [])
-        self.assertFalse(is_callable(self.mock.expect.foobar(42).andExecute(None)))
+        self.assertEqual(self.dir(self.mock.expect.foobar(42).and_return(12)), [])
+        self.assertFalse(is_callable(self.mock.expect.foobar(42).and_return(12)))
+        self.assertEqual(self.dir(self.mock.expect.foobar(42).and_raise(None)), [])
+        self.assertFalse(is_callable(self.mock.expect.foobar(42).and_raise(None)))
+        self.assertEqual(self.dir(self.mock.expect.foobar(42).and_execute(None)), [])
+        self.assertFalse(is_callable(self.mock.expect.foobar(42).and_execute(None)))
 
     def test_anded_expectation(self):
-        self.assertEqual(self.dir(self.mock.expect.foobar.andReturn(12)), [])
-        self.assertFalse(is_callable(self.mock.expect.foobar.andReturn(12)))
-        self.assertEqual(self.dir(self.mock.expect.foobar.andRaise(None)), [])
-        self.assertFalse(is_callable(self.mock.expect.foobar.andRaise(None)))
-        self.assertEqual(self.dir(self.mock.expect.foobar.andExecute(None)), [])
-        self.assertFalse(is_callable(self.mock.expect.foobar.andExecute(None)))
+        self.assertEqual(self.dir(self.mock.expect.foobar.and_return(12)), [])
+        self.assertFalse(is_callable(self.mock.expect.foobar.and_return(12)))
+        self.assertEqual(self.dir(self.mock.expect.foobar.and_raise(None)), [])
+        self.assertFalse(is_callable(self.mock.expect.foobar.and_raise(None)))
+        self.assertEqual(self.dir(self.mock.expect.foobar.and_execute(None)), [])
+        self.assertFalse(is_callable(self.mock.expect.foobar.and_execute(None)))
 
     def test_object(self):
         # @todo Expose expected calls in mock.object.__dir__. And check is_callable matches what's been expected. Even for an attribute that's first expected to not be called, then expected to be called: the object's corresponding attribute should show that behavior.

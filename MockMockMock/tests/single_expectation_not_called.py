@@ -26,7 +26,7 @@ class SingleExpectationNotCalledTestCase(unittest.TestCase):
         self.assertEqual(str(cm.exception), "mock.barbaz called instead of mock.foobar")
 
     def test_property_with_bad_name(self):
-        self.mock.expect.foobar.andReturn(42)
+        self.mock.expect.foobar.and_return(42)
         with self.assertRaises(MockMockMock.MockException) as cm:
             self.mock.object.barbaz
         self.assertEqual(str(cm.exception), "mock.barbaz called instead of mock.foobar")

@@ -16,7 +16,7 @@ class SystemCallsTestCase(unittest.TestCase):
     def test_mock_globally_imported_function(self):
         original = os.path.exists
         m = self.mocks.replace("os.path.exists")
-        m.expect("foo").andReturn(True)
+        m.expect("foo").and_return(True)
         self.assertTrue(os.path.exists("foo"))
         self.mocks.tearDown()
         self.assertIs(os.path.exists, original)
@@ -26,7 +26,7 @@ class SystemCallsTestCase(unittest.TestCase):
         import subprocess
         original = subprocess.check_output
         m = self.mocks.replace("subprocess.check_output")
-        m.expect(["foo", "bar"]).andReturn("baz\n")
+        m.expect(["foo", "bar"]).and_return("baz\n")
         self.assertEqual(subprocess.check_output(["foo", "bar"]), "baz\n")
         self.mocks.tearDown()
         self.assertIs(subprocess.check_output, original)

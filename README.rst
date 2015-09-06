@@ -30,6 +30,12 @@ Questions? Remarks? Bugs? Want to contribute? `Open an issue <https://github.com
 .. image:: https://img.shields.io/pypi/v/MockMockMock.svg
     :target: https://pypi.python.org/pypi/MockMockMock
 
+.. image:: https://img.shields.io/pypi/pyversions/MockMockMock.svg
+    :target: https://pypi.python.org/pypi/MockMockMock
+
+.. image:: https://img.shields.io/pypi/status/MockMockMock.svg
+    :target: https://pypi.python.org/pypi/MockMockMock
+
 .. image:: https://img.shields.io/github/issues/jacquev6/MockMockMock.svg
     :target: https://github.com/jacquev6/MockMockMock/issues
 

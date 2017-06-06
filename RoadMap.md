@@ -1,3 +1,6 @@
+This project is done (see README.rst). No more changes will be made.
+
+
 Functional improvements
 =======================
 

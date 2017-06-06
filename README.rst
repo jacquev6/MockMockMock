@@ -1,4 +1,7 @@
-MockMockMock is a Python (2.7+ and 3.3+) `mocking <http://en.wikipedia.org/wiki/Mock_object>`_ library
+**DO NOT USE THIS LIBRARY**: there is now a standard `mocking library in Python <https://docs.python.org/3/library/unittest.mock.html>`__.
+I will not fix anything in this library and I'm migrating my own projects to ``unittest.mock``.
+
+MockMockMock is a Python (2.7+ and 3.3+) `mocking <http://en.wikipedia.org/wiki/Mock_object>`__ library
 focusing on very explicit definition of the mocks' behaviour.
 It allows as-specific-as-needed unit-tests as well as more generic ones.
 
@@ -6,8 +9,6 @@ It's licensed under the `MIT license <http://choosealicense.com/licenses/mit/>`_
 It's available on the `Python package index <http://pypi.python.org/pypi/MockMockMock>`__,
 its `documentation is hosted by Python <http://pythonhosted.org/MockMockMock>`__
 and its source code is on `GitHub <https://github.com/jacquev6/MockMockMock>`__.
-
-Questions? Remarks? Bugs? Want to contribute? `Open an issue <https://github.com/jacquev6/MockMockMock/issues>`__!
 
 .. image:: https://img.shields.io/travis/jacquev6/MockMockMock/master.svg
     :target: https://travis-ci.org/jacquev6/MockMockMock
